@@ -1,23 +1,33 @@
-const mongoose = require("mongoose");
-
-const habitoSchema = new mongoose.Schema({
-  nombre: {
+const mongoose = require('mongoose');
+const habitSchema = new mongoose.Schema({
+  title: {
     type: String,
-    required: true,
+    required: true
   },
-  descripcion: String,
-  diasCompletados: {
-    type: Number,
-    default: 0,
+  description: {
+    type: String,
+    required: true
   },
-  completadoHoy: {
-    type: Boolean,
-    default: false,
-  },
-  fecha: {
+  createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
+  },
+  lastUpdate: {
+    type: Date,
+    default: Date.now
+  },
+  lastDone: {
+    type: Date,
+    default: Date.now
+  },
+  days: {
+    type: Number,
+    default: 0
+  },
+  startedAt: {
+    type: Date,
+    default: Date.now
   },
 });
 
-module.exports = mongoose.model("Habito", habitoSchema);
+module.exports = mongoose.model('Habit', habitSchema);
