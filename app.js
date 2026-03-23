@@ -22,7 +22,10 @@ var habitosRouter = require('./routes/habitos');
 var app = express();
 
 // Habilitar la política CORS para que el frontend pueda conectarse
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
 app.use(logger('dev'));
 app.use(express.json());

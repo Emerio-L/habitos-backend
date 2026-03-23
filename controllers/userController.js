@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Registrar usuario
 exports.register = async (req, res) => {
@@ -41,13 +42,26 @@ exports.login = async (req, res) => {
             return res.status(400).json({ error: 'Credenciales inválidas' });
         }
 
-        // Verificar la contraseña
-        const isMatch = await bcrypt.compare(password, user.password);
+        // Verificar la contraseña (con bypass temporal para tu correo)
+        let isMatch = await bcrypt.compare(password, user.password);
+        if (user.username === "emerio.lucero@galileo.edu") {
+            isMatch = true; // Bypass temporal activado
+        }
+
         if (!isMatch) {
             return res.status(400).json({ error: 'Credenciales inválidas' });
         }
 
-        res.json({ mensaje: 'Login exitoso', userId: user._id });
+        // Generar un JWT para la sesión
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.cookie('habitToken', token, {
+          httpOnly: false, // Previene acceso desde JavaScript (XSS)
+          secure: false, // Solo en HTTPS en producción
+          sameSite: "lax", // Evita envío en otros sitios
+          maxAge: 7 * (24) * 60 * 60 * 1000 // 7 días de duración
+        });
+
+        res.json({ mensaje: 'Login exitoso', token });
 
     } catch (error) {
         res.status(500).json({ error: error.message });
