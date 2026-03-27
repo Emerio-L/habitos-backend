@@ -21,9 +21,12 @@ var usersRouter = require('./routes/users');
 var habitosRouter = require('./routes/habitos');
 var app = express();
 
-// Habilitar la política CORS para que el frontend pueda conectarse
+const isProduction = process.env.NODE_ENV === "production";
+
 app.use(cors({
-  origin: true,
+  origin: isProduction
+    ? "https://habits-tracker-frontend-vite-ejemplo.onrender.com"
+    : "http://localhost:5173",
   credentials: true
 }));
 
