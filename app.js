@@ -24,9 +24,10 @@ var app = express();
 const isProduction = process.env.NODE_ENV === "production";
 
 app.use(cors({
-  origin: isProduction
-    ? "https://habits-tracker-frontend-vite-ejemplo.onrender.com"
-    : "http://localhost:5173",
+  origin: [
+    "https://habitos-frontend-388g.onrender.com", 
+    "http://localhost:3001"
+  ],
   credentials: true
 }));
 
