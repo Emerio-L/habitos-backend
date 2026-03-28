@@ -11,7 +11,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/register', async function(req, res, next) {
   try {
-    const { username, password } = req.body;
+    const username = req.body.username || req.body.email;
+    const password = req.body.password;
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -27,7 +28,8 @@ router.post('/register', async function(req, res, next) {
 });
 router.post('/login', async function(req, res, next) {
   try {
-    const { username, password } = req.body;
+    const username = req.body.username || req.body.email;
+    const password = req.body.password;
 
     const user = await User.findOne({ username });
     if (!user) return res.status(400).json({ error: "Usuario no encontrado" });
