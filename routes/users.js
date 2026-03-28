@@ -24,7 +24,7 @@ router.post('/register', async function(req, res, next) {
     res.status(201).json({ message: "Usuario registrado correctamente" });
 } catch (error) {
     console.error("=== REGISTER ERROR ===", error);
-    res.status(500).json({ error: "Error en el registro", "description":error.toString() });
+    res.status(500).json({ error: `Error en el registro: ${error.message || error.toString()}` });
 }
 });
 router.post('/login', async function(req, res, next) {
@@ -54,7 +54,7 @@ router.post('/login', async function(req, res, next) {
     res.json({ message: "Inicio de sesión exitoso", token });
 } catch (error) {
     console.error("=== LOGIN ERROR ===", error);
-    res.status(500).json({ error: "Error en el login", "description":error.toString() });
+    res.status(500).json({ error: `Error en el login: ${error.message || error.toString()}` });
 }
 });
 module.exports = router;
